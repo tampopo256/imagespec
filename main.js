@@ -15,7 +15,7 @@ let currentLongUrl = '';
 
 // Short.io 設定
 const SHORT_IO_ENDPOINT = 'https://api.short.io/links/public';
-const SHORT_IO_DOMAIN = 'imagespec.short.gy';
+const SHORT_IO_DOMAIN = 's.village-se.com';
 const SHORT_IO_API_KEY = 'pk_Y3wd4PtuCG7KQmwP';
 
 /**
