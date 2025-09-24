@@ -14,6 +14,30 @@ let toastInstance = null;
 let currentLongUrl = '';
 
 /**
+ * ポインター位置を取得（マウス/タッチ対応）
+ */
+function getPointerPosition(event) {
+    if (event.touches && event.touches.length > 0) {
+        return {
+            x: event.touches[0].clientX,
+            y: event.touches[0].clientY
+        };
+    }
+
+    if (event.changedTouches && event.changedTouches.length > 0) {
+        return {
+            x: event.changedTouches[0].clientX,
+            y: event.changedTouches[0].clientY
+        };
+    }
+
+    return {
+        x: event.clientX,
+        y: event.clientY
+    };
+}
+
+/**
  * 初期化処理
  */
 document.addEventListener('DOMContentLoaded', function() {
@@ -552,66 +576,78 @@ function setupCropDrag() {
     let resizeDirection = '';
     
     // オーバーレイのドラッグ（移動）
-    cropOverlay.addEventListener('mousedown', function(e) {
+    function startDrag(e) {
         if (e.target.classList.contains('crop-handle')) return;
-        
+
+        const pointer = getPointerPosition(e);
+
         isDragging = true;
         const rect = cropOverlay.getBoundingClientRect();
-        const containerRect = cropContainer.getBoundingClientRect();
-        dragStart.x = e.clientX - rect.left;
-        dragStart.y = e.clientY - rect.top;
-        
+        dragStart.x = pointer.x - rect.left;
+        dragStart.y = pointer.y - rect.top;
+
         e.preventDefault();
-    });
+    }
+
+    cropOverlay.addEventListener('mousedown', startDrag);
+    cropOverlay.addEventListener('touchstart', startDrag, { passive: false });
     
     // リサイズハンドルのドラッグ
     const handles = cropOverlay.querySelectorAll('.crop-handle');
     handles.forEach(handle => {
-        handle.addEventListener('mousedown', function(e) {
+        function startResize(e) {
+            const pointer = getPointerPosition(e);
+
             isResizing = true;
             resizeDirection = handle.className.split(' ')[1];
-            
+
             const containerRect = cropContainer.getBoundingClientRect();
-            dragStart.x = e.clientX - containerRect.left;
-            dragStart.y = e.clientY - containerRect.top;
-            
+            dragStart.x = pointer.x - containerRect.left;
+            dragStart.y = pointer.y - containerRect.top;
+
             e.preventDefault();
             e.stopPropagation();
-        });
+        }
+
+        handle.addEventListener('mousedown', startResize);
+        handle.addEventListener('touchstart', startResize, { passive: false });
     });
-    
-    // マウス移動イベント
-    document.addEventListener('mousemove', function(e) {
+
+    function handleMove(e) {
+        const pointer = getPointerPosition(e);
         const containerRect = cropContainer.getBoundingClientRect();
         const imageRect = cropImage.getBoundingClientRect();
-        
+
         if (isDragging) {
-            const newLeft = e.clientX - containerRect.left - dragStart.x;
-            const newTop = e.clientY - containerRect.top - dragStart.y;
-            
+            const newLeft = pointer.x - containerRect.left - dragStart.x;
+            const newTop = pointer.y - containerRect.top - dragStart.y;
+
             const maxLeft = imageRect.width - cropOverlay.offsetWidth;
             const maxTop = imageRect.height - cropOverlay.offsetHeight;
-            
+
             cropOverlay.style.left = Math.max(0, Math.min(maxLeft, newLeft)) + 'px';
             cropOverlay.style.top = Math.max(0, Math.min(maxTop, newTop)) + 'px';
-            
+
+            e.preventDefault();
         } else if (isResizing) {
-            const currentX = e.clientX - containerRect.left;
-            const currentY = e.clientY - containerRect.top;
-            
+            const currentX = pointer.x - containerRect.left;
+            const currentY = pointer.y - containerRect.top;
+
             const [ratioW, ratioH] = params.ratio.split(':').map(Number);
             const targetRatio = params.orient === 'portrait' ? ratioH / ratioW : ratioW / ratioH;
-            
+
             let newWidth = cropOverlay.offsetWidth;
             let newHeight = cropOverlay.offsetHeight;
-            let newLeft = parseInt(cropOverlay.style.left);
-            let newTop = parseInt(cropOverlay.style.top);
-            
+            let newLeft = parseFloat(cropOverlay.style.left);
+            let newTop = parseFloat(cropOverlay.style.top);
+
+            if (Number.isNaN(newLeft)) newLeft = 0;
+            if (Number.isNaN(newTop)) newTop = 0;
+
             if (resizeDirection.includes('e')) {
                 newWidth = currentX - newLeft;
             }
             if (resizeDirection.includes('w')) {
-                const oldWidth = newWidth;
                 newWidth = newLeft + newWidth - currentX;
                 newLeft = currentX;
             }
@@ -619,38 +655,45 @@ function setupCropDrag() {
                 newHeight = currentY - newTop;
             }
             if (resizeDirection.includes('n')) {
-                const oldHeight = newHeight;
                 newHeight = newTop + newHeight - currentY;
                 newTop = currentY;
             }
-            
+
             // 比率を維持
             if (newWidth / newHeight > targetRatio) {
                 newWidth = newHeight * targetRatio;
             } else {
                 newHeight = newWidth / targetRatio;
             }
-            
+
             // 境界チェック
-            if (newLeft >= 0 && newTop >= 0 && 
-                newLeft + newWidth <= imageRect.width && 
+            if (newLeft >= 0 && newTop >= 0 &&
+                newLeft + newWidth <= imageRect.width &&
                 newTop + newHeight <= imageRect.height &&
                 newWidth >= 50 && newHeight >= 50) {
-                
+
                 cropOverlay.style.left = newLeft + 'px';
                 cropOverlay.style.top = newTop + 'px';
                 cropOverlay.style.width = newWidth + 'px';
                 cropOverlay.style.height = newHeight + 'px';
             }
+
+            e.preventDefault();
         }
-    });
-    
-    // マウスアップイベント
-    document.addEventListener('mouseup', function() {
+    }
+
+    document.addEventListener('mousemove', handleMove);
+    document.addEventListener('touchmove', handleMove, { passive: false });
+
+    function endInteraction() {
         isDragging = false;
         isResizing = false;
         resizeDirection = '';
-    });
+    }
+
+    document.addEventListener('mouseup', endInteraction);
+    document.addEventListener('touchend', endInteraction);
+    document.addEventListener('touchcancel', endInteraction);
 }
 
 /**
