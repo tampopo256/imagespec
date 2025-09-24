@@ -920,8 +920,7 @@ async function createShortUrl() {
 
         const requestBody = {
             domain: SHORT_IO_DOMAIN,
-            originalURL: currentLongUrl,
-            expiredURL: expiredUrl
+            originalURL: currentLongUrl
         };
 
         if (desc) {
