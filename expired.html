@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>リンク期限切れ - 画像条件便</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            body {
+                background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+                color: #fff;
+            }
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .expired-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 48px 32px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .expired-card {
+                background: rgba(26, 32, 44, 0.95);
+                border-color: rgba(255, 255, 255, 0.1);
+            }
+        }
+
+        .expired-icon {
+            font-size: 80px;
+            margin-bottom: 24px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .expired-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .expired-message {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 32px;
+            line-height: 1.8;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .expired-message {
+                color: #a0aec0;
+            }
+        }
+
+        .description-section {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 32px;
+            border-left: 4px solid #667eea;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .description-section {
+                background: #2d3748;
+                border-color: #7c3aed;
+            }
+        }
+
+        .description-label {
+            font-weight: 600;
+            color: #4a5568;
+            margin-bottom: 8px;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .description-label {
+                color: #a0aec0;
+            }
+        }
+
+        .description-text {
+            font-size: 16px;
+            color: #2d3748;
+            font-weight: 500;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .description-text {
+                color: #e2e8f0;
+            }
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            min-height: 44px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            box-shadow: 0 4px 15px rgba(72, 187, 120, 0.4);
+        }
+
+        .btn-secondary:hover {
+            box-shadow: 0 6px 20px rgba(72, 187, 120, 0.6);
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 32px;
+            text-align: left;
+        }
+
+        .info-item {
+            background: rgba(255, 255, 255, 0.5);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .info-item {
+                background: rgba(45, 55, 72, 0.5);
+                border-color: rgba(255, 255, 255, 0.1);
+            }
+        }
+
+        .info-item h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-item p {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .info-item p {
+                color: #a0aec0;
+            }
+        }
+
+        .footer {
+            margin-top: 48px;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        @media (max-width: 640px) {
+            .expired-card {
+                padding: 32px 20px;
+            }
+            
+            .expired-title {
+                font-size: 24px;
+            }
+            
+            .expired-icon {
+                font-size: 60px;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .info-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 16px;
+            }
+            
+            .expired-card {
+                padding: 24px 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="expired-card">
+            <div class="expired-icon">⏰</div>
+            
+            <h1 class="expired-title">リンク期限切れ</h1>
+            
+            <p class="expired-message">
+                申し訳ございませんが、このリンクは有効期限が切れています。
+            </p>
+
+            <!-- 説明表示エリア -->
+            <div id="descriptionSection" class="description-section" style="display: none;">
+                <div class="description-label">元の説明</div>
+                <div id="descriptionText" class="description-text"></div>
+            </div>
+
+
+
+            <div class="footer">
+                <p>画像変換ツール - 期限切れリンク表示ページ</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /**
+         * URLパラメータから説明を取得して表示
+         */
+        function displayDescription() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const desc = urlParams.get('desc');
+            
+            if (desc && desc.trim()) {
+                try {
+                    // URLデコードして安全に表示
+                    const decodedDesc = decodeURIComponent(desc);
+                    const descSection = document.getElementById('descriptionSection');
+                    const descText = document.getElementById('descriptionText');
+                    
+                    // XSS対策でtextContentを使用
+                    descText.textContent = decodedDesc;
+                    descSection.style.display = 'block';
+                } catch (error) {
+                    console.error('Description decode error:', error);
+                    // デコードエラーの場合は表示しない
+                }
+            }
+        }
+
+        /**
+         * ページロード時の処理
+         */
+        function initializePage() {
+            displayDescription();
+            
+            // アニメーション効果
+            const card = document.querySelector('.expired-card');
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            
+            setTimeout(() => {
+                card.style.transition = 'all 0.6s ease';
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, 100);
+        }
+
+        // ページロード時に初期化
+        document.addEventListener('DOMContentLoaded', initializePage);
+    </script>
+</body>
+</html>
