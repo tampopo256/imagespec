@@ -13,6 +13,11 @@ let params = {};
 let toastInstance = null;
 let currentLongUrl = '';
 
+// Short.io 設定
+const SHORT_IO_ENDPOINT = 'https://api.short.io/links/public';
+const SHORT_IO_DOMAIN = 's.village-se.com';
+const SHORT_IO_API_KEY = 'pk_Y3wd4PtuCG7KQmwP';
+
 /**
  * ポインター位置を取得（マウス/タッチ対応）
  */
@@ -908,35 +913,37 @@ async function createShortUrl() {
     spinner.classList.remove('d-none');
 
     try {
-        const proxyUrl = 'https://api.allorigins.win/raw?url=';
-        const targetUrl = encodeURIComponent('https://clc.is/api/links');
-
-        
         const desc = formData.get('desc') || '';
-        const expiredUrl = desc ? 
+        const expiredUrl = desc ?
             `${window.location.origin}/expired.html?desc=${encodeURIComponent(desc)}` :
             `${window.location.origin}/expired.html`;
 
         const requestBody = {
-            domain: "clc.is",
-            target_url: currentLongUrl,
-            expired_url: expiredUrl
+            domain: SHORT_IO_DOMAIN,
+            originalURL: currentLongUrl,
+            expiredURL: expiredUrl
         };
+
+        if (desc) {
+            requestBody.title = desc;
+        }
 
         const slugType = formData.get('slugType');
         if (slugType && slugType !== 'auto') {
-            requestBody.slug = slugType;
+            requestBody.path = slugType;
         }
 
-        const expiredHours = parseInt(formData.get('expiredHours')) || 0;
+        const expiredHours = parseInt(formData.get('expiredHours'), 10) || 0;
         if (expiredHours > 0) {
-            requestBody.expired_hours = expiredHours;
+            const expiresAt = new Date(Date.now() + expiredHours * 60 * 60 * 1000);
+            requestBody.expiresAt = expiresAt.toISOString();
         }
 
-        const response = await fetch(proxyUrl + targetUrl, {
+        const response = await fetch(SHORT_IO_ENDPOINT, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': SHORT_IO_API_KEY
             },
             body: JSON.stringify(requestBody)
         });
@@ -945,9 +952,10 @@ async function createShortUrl() {
 
         console.log('API Response:', responseData);
 
-        if (response.ok) {
-            const shortUrl = responseData.short_url || `https://clc.is/${responseData.slug}`;
-            
+        if (response.ok && responseData.shortURL) {
+            const shortUrl = responseData.secureShortURL || responseData.shortURL;
+            const resolvedSlug = slugType === 'auto' ? (responseData.path || '自動生成') : slugType;
+
             resultSection.innerHTML = `
                 <div class="alert alert-success" role="alert">
                     <h5 class="alert-heading">✅ 短縮URLの作成に成功しました！</h5>
@@ -971,7 +979,7 @@ async function createShortUrl() {
                             <h6 class="card-title">設定詳細</h6>
                             <ul class="list-unstyled mb-0">
                                 <li><strong>有効期限:</strong> ${expiredHours > 0 ? `${expiredHours}時間` : '無期限'}</li>
-                                <li><strong>スラッグ:</strong> ${slugType === 'auto' ? '自動生成' : slugType}</li>
+                                <li><strong>スラッグ:</strong> ${resolvedSlug}</li>
                                 <li><strong>期限切れ後の転送先:</strong> <small>${expiredUrl}</small></li>
                             </ul>
                         </div>
@@ -981,7 +989,7 @@ async function createShortUrl() {
             resultSection.classList.remove('d-none');
             showToast('短縮URLを作成しました！');
         } else {
-            const errorMsg = responseData.message || responseData.error || 'エラーが発生しました';
+            const errorMsg = responseData.message || responseData.error || responseData.code || 'エラーが発生しました';
             resultSection.innerHTML = `
                 <div class="alert alert-danger" role="alert">
                     <h5 class="alert-heading">❌ 短縮URLの作成に失敗しました</h5>
