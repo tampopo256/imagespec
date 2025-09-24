@@ -920,24 +920,20 @@ async function createShortUrl() {
 
         const requestBody = {
             domain: SHORT_IO_DOMAIN,
-            originalURL: currentLongUrl,
-            expiredURL: expiredUrl
+            originalURL: currentLongUrl
         };
 
         if (desc) {
             requestBody.title = desc;
         }
 
-        const slugType = formData.get('slugType');
-        if (slugType && slugType !== 'auto') {
-            requestBody.path = slugType;
-        }
-
-        const expiredHours = parseInt(formData.get('expiredHours'), 10) || 0;
-        if (expiredHours > 0) {
-            const expiresAt = new Date(Date.now() + expiredHours * 60 * 60 * 1000);
-            requestBody.expiresAt = expiresAt.toISOString();
-        }
+        const safeDesc = desc
+            ? desc.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+            : '設定なし';
+        const safeExpiredUrl = expiredUrl.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        const safeOriginalUrl = currentLongUrl
+            ? currentLongUrl.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+            : '';
 
         const response = await fetch(SHORT_IO_ENDPOINT, {
             method: 'POST',
@@ -954,7 +950,6 @@ async function createShortUrl() {
 
         if (response.ok && responseData.shortURL) {
             const shortUrl = responseData.secureShortURL || responseData.shortURL;
-            const resolvedSlug = slugType === 'auto' ? (responseData.path || '自動生成') : slugType;
 
             resultSection.innerHTML = `
                 <div class="alert alert-success" role="alert">
@@ -978,9 +973,9 @@ async function createShortUrl() {
                         <div class="card-body">
                             <h6 class="card-title">設定詳細</h6>
                             <ul class="list-unstyled mb-0">
-                                <li><strong>有効期限:</strong> ${expiredHours > 0 ? `${expiredHours}時間` : '無期限'}</li>
-                                <li><strong>スラッグ:</strong> ${resolvedSlug}</li>
-                                <li><strong>期限切れ後の転送先:</strong> <small>${expiredUrl}</small></li>
+                                ${safeOriginalUrl ? `<li><strong>短縮対象URL:</strong> <small>${safeOriginalUrl}</small></li>` : ''}
+                                <li><strong>説明:</strong> ${desc ? safeDesc : '設定なし'}</li>
+                                <li><strong>期限切れ後の転送先:</strong> <small>${safeExpiredUrl}</small></li>
                             </ul>
                         </div>
                     </div>

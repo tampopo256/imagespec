@@ -21,7 +21,7 @@
                     </div>
 
                     <!-- ナビゲーション -->
-                    <nav class="d-flex justify-content-center mb-4">
+                    <!-- <nav class="d-flex justify-content-center mb-4">
                         <ul class="nav nav-pills">
                             <li class="nav-item">
                                 <a class="nav-link" href="index.html">📸 変換ツール</a>
@@ -33,7 +33,7 @@
                                 <a class="nav-link" href="expired.html">ℹ️ 期限切れページ</a>
                             </li>
                         </ul>
-                    </nav>
+                    </nav> -->
 
                     <!-- 設定フォーム -->
                     <form id="paramForm">
@@ -122,34 +122,8 @@
                                 <!-- 説明 -->
                                 <div class="mb-4">
                                     <label for="desc" class="form-label fw-semibold">📝 説明 (任意)</label>
-                                    <input type="text" id="desc" name="desc" class="form-control" placeholder="例：UNIDOL画像用、プロフィール画像用">
+                                    <input type="text" id="desc" name="desc" class="form-control" placeholder="例：配信画像用、プロフィール画像用">
                                     <div class="form-text">用途や目的を記入すると管理しやすくなります</div>
-                                </div>
-
-                                <!-- 有効期限 -->
-                                <div class="mb-4">
-                                    <label for="expiredHours" class="form-label fw-semibold">⏰ 有効期限 (時間)</label>
-                                    <input type="number" id="expiredHours" name="expiredHours" class="form-control" value="24" min="0" max="8760">
-                                    <div class="form-text">0を入力すると無期限になります (最大365日)</div>
-                                </div>
-
-                                <!-- カスタムスラッグ -->
-                                <div class="mb-4">
-                                    <label class="form-label fw-semibold">🏷️ カスタムスラッグ</label>
-                                    <div class="d-flex gap-3">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" id="slugVillage" name="slugType" value="village-se">
-                                            <label class="form-check-label" for="slugVillage">village-se</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" id="slugMk" name="slugType" value="mk">
-                                            <label class="form-check-label" for="slugMk">mk</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" id="slugAuto" name="slugType" value="auto" checked>
-                                            <label class="form-check-label" for="slugAuto">自動生成</label>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -181,27 +155,27 @@
                     </div>
 
                     <!-- 機能説明 -->
-                    <div class="info-grid">
+                    <!-- <div class="info-grid">
                         <div class="info-item">
                             <h3>⚙️ 条件設定</h3>
                             <p>画像の比率、サイズ、形式などを詳細に設定して、専用の変換URLを生成できます。</p>
                         </div>
                         <div class="info-item">
                             <h3>🔗 短縮URL</h3>
-                            <p>生成されたURLを短縮して、共有しやすくします。有効期限の設定も可能です。</p>
+                            <p>生成されたURLを短縮して、共有しやすくします。</p>
                         </div>
                         <div class="info-item">
                             <h3>📱 共有機能</h3>
                             <p>作成したURLは簡単にコピー・共有でき、同じ条件での変換を他の人と共有できます。</p>
                         </div>
                         <div class="info-item">
-                            <h3>⏰ 期限管理</h3>
-                            <p>URLの有効期限を設定でき、期限切れ後は専用ページにリダイレクトされます。</p>
+                            <h3>📝 情報整理</h3>
+                            <p>用途や目的などの説明を添えて短縮URLを管理できます。</p>
                         </div>
-                    </div>
+                    </div> -->
 
                     <!-- 使用方法ガイド -->
-                    <div class="card mt-4">
+                    <!-- <div class="card mt-4">
                         <div class="card-body">
                             <h5 class="card-title">📖 使用方法ガイド</h5>
                             <div class="row">
@@ -219,16 +193,16 @@
                                     <ul class="list-unstyled small">
                                         <li>📝 <strong>自動生成:</strong> 設定変更で即座にURL更新</li>
                                         <li>🔗 <strong>短縮URL:</strong> Short.io APIで短縮リンク作成</li>
-                                        <li>⏰ <strong>有効期限:</strong> 1時間〜365日、または無期限</li>
                                         <li>📋 <strong>簡単共有:</strong> ワンクリックでコピー可能</li>
+                                        <li>📝 <strong>説明付き:</strong> 用途メモをURLに添付</li>
                                     </ul>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
 
                     <!-- 活用例 -->
-                    <div class="card mt-4">
+                    <!-- <div class="card mt-4">
                         <div class="card-body">
                             <h5 class="card-title">💡 活用例</h5>
                             <div class="row">
@@ -255,10 +229,10 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
 
                     <!-- 技術仕様 -->
-                    <div class="card mt-4">
+                    <!-- <div class="card mt-4">
                         <div class="card-body">
                             <h5 class="card-title">🔧 技術仕様</h5>
                             <div class="row">
@@ -274,12 +248,26 @@
                                     <h6>URL仕様</h6>
                                     <ul class="small">
                                         <li><strong>短縮サービス:</strong> Short.io API</li>
-                                        <li><strong>有効期限:</strong> 最大365日</li>
-                                        <li><strong>カスタムスラッグ:</strong> 対応</li>
+                                        <li><strong>期限切れ時リダイレクト:</strong> 専用ページに転送</li>
+                                        <li><strong>説明:</strong> 任意のテキストを設定可能</li>
                                     </ul>
                                 </div>
                             </div>
                         </div>
+                    </div> -->
+
+                    <!-- フッター -->
+                    <div class="footer">
+                        <p class="mt-3">
+                            <small class="text-muted">
+                                🛡️ プライバシー保護のため、アップロードされた画像はサーバーに保存されません。<br>
+                                すべての処理はお使いのブラウザ内で完了します。
+                            </small>
+                        </p>
+                        <p class="text-muted mb-0">
+                            <strong>画像条件便</strong> - 画像ファイル変換サービス<br>
+                            <small>© 2025 画像条件便. All rights reserved.</small>
+                        </p>
                     </div>
                 </div>
             </div>
