@@ -3,171 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>画像条件便</title>
+    <title>画像条件便 - ファイル変換サービス</title>
+    <meta name="description" content="画像条件便は、画像の比率調整・容量削減・形式変換を簡単に行えるファイル変換サービスです。">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px 0;
-        }
-
-        .main-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        @media (prefers-color-scheme: dark) {
-            .main-card {
-                background: rgba(26, 32, 44, 0.95);
-                color: #fff;
-            }
-        }
-
-        .upload-area {
-            border: 2px dashed #6c757d;
-            border-radius: 10px;
-            padding: 3rem 1rem;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            background: #f8f9fa;
-        }
-
-        .upload-area:hover, .upload-area.dragover {
-            border-color: #0d6efd;
-            background: #e3f2fd;
-        }
-
-        @media (prefers-color-scheme: dark) {
-            .upload-area {
-                background: #343a40;
-                border-color: #6c757d;
-            }
-            .upload-area:hover, .upload-area.dragover {
-                background: #495057;
-                border-color: #0d6efd;
-            }
-        }
-
-        .upload-icon {
-            font-size: 3rem;
-            color: #6c757d;
-            margin-bottom: 1rem;
-        }
-
-        .preview-image {
-            max-width: 100%;
-            max-height: 400px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-
-        .crop-container {
-            position: relative;
-            display: inline-block;
-            max-width: 100%;
-            max-height: 400px;
-            overflow: hidden;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-
-        .crop-image {
-            max-width: 100%;
-            max-height: 400px;
-            cursor: crosshair;
-        }
-
-        .crop-overlay {
-            position: absolute;
-            border: 2px solid #0d6efd;
-            background: rgba(13, 110, 253, 0.1);
-            cursor: move;
-            min-width: 50px;
-            min-height: 50px;
-        }
-
-        .crop-overlay::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            border: 1px dashed #fff;
-            margin: 4px;
-        }
-
-        .crop-handle {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            background: #0d6efd;
-            border: 2px solid #fff;
-            border-radius: 50%;
-        }
-
-        .crop-handle.nw { top: -5px; left: -5px; cursor: nw-resize; }
-        .crop-handle.ne { top: -5px; right: -5px; cursor: ne-resize; }
-        .crop-handle.sw { bottom: -5px; left: -5px; cursor: sw-resize; }
-        .crop-handle.se { bottom: -5px; right: -5px; cursor: se-resize; }
-
-        .condition-banner {
-            background: linear-gradient(135deg, #0d6efd 0%, #6610f2 100%);
-            color: white;
-            border-radius: 10px;
-        }
-
-        .share-url {
-            background: #f8f9fa;
-            border: 1px solid #dee2e6;
-            word-break: break-all;
-            font-family: 'Courier New', monospace;
-            font-size: 0.9rem;
-        }
-
-        @media (prefers-color-scheme: dark) {
-            .share-url {
-                background: #495057;
-                border-color: #6c757d;
-                color: #fff;
-            }
-        }
-
-        .toast-container {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 1050;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📸</text></svg>">
 </head>
 <body>
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-lg-8 col-xl-6">
-                <div class="main-card p-4">
+            <div class="col-lg-10 col-xl-8">
+                <div class="main-card">
                     <!-- ヘッダー -->
-                    <div class="text-center mb-4">
-                        <h1 class="h2 text-primary fw-bold mb-2">画像変換ツール</h1>
-                        <p class="text-muted">画像をアップロードして、比率調整・容量削減・形式変換を行います</p>
+                    <div class="header">
+                        <h1>📸 画像条件便</h1>
+                        <p class="subtitle">画像の比率調整・容量削減・形式変換を簡単に</p>
                     </div>
 
+                    <!-- ナビゲーション -->
+                    <!-- <nav class="d-flex justify-content-center mb-4">
+                        <ul class="nav nav-pills">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="index.html">📸 変換ツール</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="generator.html">🔗 URL生成</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="expired.html">ℹ️ 期限切れページ</a>
+                            </li>
+                        </ul>
+                    </nav> -->
+
                     <!-- 条件バナー -->
-                    <div id="conditionBanner" class="condition-banner p-3 mb-4 d-none">
-                        <div class="text-center fw-semibold" id="conditionText"></div>
+                    <div id="conditionBanner" class="condition-banner mb-4 d-none">
+                        <div id="conditionText" class="fw-semibold"></div>
                     </div>
 
                     <!-- アップロードエリア -->
                     <div class="upload-area mb-4" id="uploadArea">
                         <div class="upload-icon">📸</div>
                         <div>
-                            <p class="h5 mb-2">画像をアップロードしてください</p>
-                            <p class="text-muted">ドラッグ&ドロップまたはクリックして選択</p>
+                            <h3 class="h4 mb-3">画像をアップロードしてください</h3>
+                            <p class="text-muted mb-0">ドラッグ&ドロップまたはクリックして選択</p>
+                            <small class="text-muted">対応形式: JPEG, PNG, WebP, GIF, BMP</small>
                         </div>
                         <input type="file" id="fileInput" class="d-none" accept="image/*" aria-label="画像ファイルを選択">
                     </div>
@@ -188,7 +67,7 @@
                         <!-- 手動切り取りエリア -->
                         <div id="cropArea" class="d-none mb-4">
                             <div class="alert alert-info">
-                                <p class="mb-2"><strong>手動切り取りモード</strong></p>
+                                <h6 class="mb-2"><strong>🎯 手動切り取りモード</strong></h6>
                                 <p class="mb-0">青い枠をドラッグして切り取り範囲を調整し、「切り取り実行」ボタンを押してください。</p>
                             </div>
                             <div class="text-center mb-3">
@@ -208,12 +87,15 @@
                             </div>
                         </div>
 
+                        <!-- プレビュー画像 -->
                         <div class="text-center mb-4">
                             <img id="previewImage" class="preview-image" alt="プレビュー画像">
                         </div>
                         
+                        <!-- 処理結果情報 -->
                         <div id="infoPanel" class="alert alert-info mb-4"></div>
 
+                        <!-- アクションボタン -->
                         <div class="d-grid gap-2 d-md-flex justify-content-md-center mb-4">
                             <button id="downloadBtn" class="btn btn-primary btn-lg" aria-label="変換した画像をダウンロード">
                                 💾 ダウンロード
@@ -225,16 +107,40 @@
                     </div>
 
                     <!-- 共有セクション -->
-                    <div class="card">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">共有リンク</h5>
-                            <p class="card-text">現在の設定でリンクを生成できます</p>
-                            <textarea id="shareUrl" class="form-control share-url mb-3" rows="3" readonly></textarea>
-                            <button id="copyBtn" class="btn btn-outline-primary" aria-label="共有リンクをコピー">
-                                📋 リンクをコピー
-                            </button>
+                    <!-- <div class="card">
+                        <div class="card-body">
+                            <div class="text-center">
+                                <h5 class="card-title">🔗 現在の設定を共有</h5>
+                                <p class="card-text text-muted">このリンクを共有すると、同じ変換設定でツールを使用できます</p>
+                                <div class="mb-3">
+                                    <textarea id="shareUrl" class="form-control share-url" rows="3" readonly placeholder="共有URLがここに生成されます"></textarea>
+                                </div>
+                                <button id="copyBtn" class="btn btn-outline-primary" aria-label="共有リンクをコピー">
+                                    📋 リンクをコピー
+                                </button>
+                            </div>
                         </div>
-                    </div>
+                    </div> -->
+
+                    <!-- 機能説明 -->
+                    <!-- <div class="info-grid">
+                        <div class="info-item">
+                            <h3>📐 比率調整</h3>
+                            <p>16:9, 4:3, 1:1, 3:2の比率に自動調整。縦横の向きも選択可能です。</p>
+                        </div>
+                        <div class="info-item">
+                            <h3>🗜️ 容量削減</h3>
+                            <p>指定したファイルサイズ以下に自動圧縮。画質を保ちながら容量を削減します。</p>
+                        </div>
+                        <div class="info-item">
+                            <h3>🔄 形式変換</h3>
+                            <p>JPEG、PNG、WebPなどの形式に変換。用途に応じて最適な形式を選択できます。</p>
+                        </div>
+                        <div class="info-item">
+                            <h3>✂️ 手動切り取り</h3>
+                            <p>自動切り取りだけでなく、手動で範囲を指定した精密な切り取りも可能です。</p>
+                        </div>
+                    </div> -->
                 </div>
             </div>
         </div>
@@ -242,647 +148,15 @@
 
     <!-- Toast Container -->
     <div class="toast-container">
-        <div id="toast" class="toast align-items-center text-bg-success border-0" role="alert">
+        <div id="toast" class="toast align-items-center border-0" role="alert">
             <div class="d-flex">
                 <div class="toast-body" id="toastMessage"></div>
-                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="閉じる"></button>
             </div>
         </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // グローバル変数
-        let currentFile = null;
-        let processedCanvas = null;
-        let originalImage = null;
-        let cropData = null;
-        let isDragging = false;
-        let dragStart = { x: 0, y: 0 };
-        let params = {};
-        let toastInstance = null;
-
-        /**
-         * URLパラメータを取得・解析
-         */
-        function parseUrlParams() {
-            const urlParams = new URLSearchParams(window.location.search);
-            return {
-                ratio: urlParams.get('ratio') || '16:9',
-                orient: urlParams.get('orient') || 'landscape',
-                maxSize: parseInt(urlParams.get('maxSize')) || 1000,
-                format: urlParams.get('format') || 'jpeg',
-                maxW: parseInt(urlParams.get('maxW')) || 1920,
-                maxH: parseInt(urlParams.get('maxH')) || 1080,
-                desc: urlParams.get('desc') || ''
-            };
-        }
-
-        /**
-         * 条件バナーを表示
-         * @param {Object} params - パラメータオブジェクト
-         */
-        function displayConditionBanner(params) {
-            if (params.desc) {
-                const banner = document.getElementById('conditionBanner');
-                const text = document.getElementById('conditionText');
-                text.textContent = `変換条件: ${params.desc}`;
-                banner.classList.remove('d-none');
-            }
-        }
-
-        /**
-         * 共有リンクを生成
-         */
-        function generateShareLink() {
-            const currentUrl = new URL(window.location);
-            currentUrl.search = '';
-            
-            const urlParams = new URLSearchParams();
-            if (params.ratio !== '16:9') urlParams.set('ratio', params.ratio);
-            if (params.orient !== 'landscape') urlParams.set('orient', params.orient);
-            if (params.maxSize !== 1000) urlParams.set('maxSize', params.maxSize);
-            if (params.format !== 'jpeg') urlParams.set('format', params.format);
-            if (params.maxW !== 1920) urlParams.set('maxW', params.maxW);
-            if (params.maxH !== 1080) urlParams.set('maxH', params.maxH);
-            if (params.desc) urlParams.set('desc', params.desc);
-
-            currentUrl.search = urlParams.toString();
-            return currentUrl.toString();
-        }
-
-        /**
-         * 画像比率をチェック
-         * @param {HTMLImageElement} img - 画像要素
-         * @param {Object} params - パラメータ
-         * @returns {boolean} 比率が一致するかどうか
-         */
-        function checkImageRatio(img, params) {
-            const [ratioW, ratioH] = params.ratio.split(':').map(Number);
-            const targetRatio = params.orient === 'portrait' ? ratioH / ratioW : ratioW / ratioH;
-            const currentRatio = img.width / img.height;
-            
-            // 5%の誤差を許容
-            return Math.abs(currentRatio - targetRatio) / targetRatio < 0.05;
-        }
-
-        /**
-         * 手動切り取り機能を初期化
-         * @param {HTMLImageElement} img - 画像要素
-         */
-        function initManualCrop(img) {
-            const cropImage = document.getElementById('cropImage');
-            const cropOverlay = document.getElementById('cropOverlay');
-            const cropContainer = document.getElementById('cropContainer');
-            
-            // 画像をコピー
-            cropImage.src = img.src;
-            cropImage.onload = function() {
-                const imgRect = cropImage.getBoundingClientRect();
-                const containerRect = cropContainer.getBoundingClientRect();
-                
-                // 初期切り取り範囲を設定（中央1/2サイズ）
-                const [ratioW, ratioH] = params.ratio.split(':').map(Number);
-                const targetRatio = params.orient === 'portrait' ? ratioH / ratioW : ratioW / ratioH;
-                
-                let width, height;
-                if (imgRect.width / imgRect.height > targetRatio) {
-                    height = imgRect.height * 0.8;
-                    width = height * targetRatio;
-                } else {
-                    width = imgRect.width * 0.8;
-                    height = width / targetRatio;
-                }
-                
-                const left = (imgRect.width - width) / 2;
-                const top = (imgRect.height - height) / 2;
-                
-                cropOverlay.style.left = left + 'px';
-                cropOverlay.style.top = top + 'px';
-                cropOverlay.style.width = width + 'px';
-                cropOverlay.style.height = height + 'px';
-                
-                // ドラッグイベントを設定
-                setupCropDrag();
-            };
-        }
-
-        /**
-         * 切り取りドラッグ機能を設定
-         */
-        function setupCropDrag() {
-            const cropOverlay = document.getElementById('cropOverlay');
-            const cropImage = document.getElementById('cropImage');
-            const cropContainer = document.getElementById('cropContainer');
-            
-            let isResizing = false;
-            let resizeDirection = '';
-            
-            // オーバーレイのドラッグ（移動）
-            cropOverlay.addEventListener('mousedown', function(e) {
-                if (e.target.classList.contains('crop-handle')) return;
-                
-                isDragging = true;
-                const rect = cropOverlay.getBoundingClientRect();
-                const containerRect = cropContainer.getBoundingClientRect();
-                dragStart.x = e.clientX - rect.left;
-                dragStart.y = e.clientY - rect.top;
-                
-                e.preventDefault();
-            });
-            
-            // リサイズハンドルのドラッグ
-            const handles = cropOverlay.querySelectorAll('.crop-handle');
-            handles.forEach(handle => {
-                handle.addEventListener('mousedown', function(e) {
-                    isResizing = true;
-                    resizeDirection = handle.className.split(' ')[1];
-                    
-                    const containerRect = cropContainer.getBoundingClientRect();
-                    dragStart.x = e.clientX - containerRect.left;
-                    dragStart.y = e.clientY - containerRect.top;
-                    
-                    e.preventDefault();
-                    e.stopPropagation();
-                });
-            });
-            
-            // マウス移動イベント
-            document.addEventListener('mousemove', function(e) {
-                const containerRect = cropContainer.getBoundingClientRect();
-                const imageRect = cropImage.getBoundingClientRect();
-                
-                if (isDragging) {
-                    // 移動処理
-                    const newLeft = e.clientX - containerRect.left - dragStart.x;
-                    const newTop = e.clientY - containerRect.top - dragStart.y;
-                    
-                    const maxLeft = imageRect.width - cropOverlay.offsetWidth;
-                    const maxTop = imageRect.height - cropOverlay.offsetHeight;
-                    
-                    cropOverlay.style.left = Math.max(0, Math.min(maxLeft, newLeft)) + 'px';
-                    cropOverlay.style.top = Math.max(0, Math.min(maxTop, newTop)) + 'px';
-                    
-                } else if (isResizing) {
-                    // リサイズ処理
-                    const currentX = e.clientX - containerRect.left;
-                    const currentY = e.clientY - containerRect.top;
-                    
-                    const [ratioW, ratioH] = params.ratio.split(':').map(Number);
-                    const targetRatio = params.orient === 'portrait' ? ratioH / ratioW : ratioW / ratioH;
-                    
-                    let newWidth = cropOverlay.offsetWidth;
-                    let newHeight = cropOverlay.offsetHeight;
-                    let newLeft = parseInt(cropOverlay.style.left);
-                    let newTop = parseInt(cropOverlay.style.top);
-                    
-                    if (resizeDirection.includes('e')) {
-                        newWidth = currentX - newLeft;
-                    }
-                    if (resizeDirection.includes('w')) {
-                        const oldWidth = newWidth;
-                        newWidth = newLeft + newWidth - currentX;
-                        newLeft = currentX;
-                    }
-                    if (resizeDirection.includes('s')) {
-                        newHeight = currentY - newTop;
-                    }
-                    if (resizeDirection.includes('n')) {
-                        const oldHeight = newHeight;
-                        newHeight = newTop + newHeight - currentY;
-                        newTop = currentY;
-                    }
-                    
-                    // 比率を維持
-                    if (newWidth / newHeight > targetRatio) {
-                        newWidth = newHeight * targetRatio;
-                    } else {
-                        newHeight = newWidth / targetRatio;
-                    }
-                    
-                    // 境界チェック
-                    if (newLeft >= 0 && newTop >= 0 && 
-                        newLeft + newWidth <= imageRect.width && 
-                        newTop + newHeight <= imageRect.height &&
-                        newWidth >= 50 && newHeight >= 50) {
-                        
-                        cropOverlay.style.left = newLeft + 'px';
-                        cropOverlay.style.top = newTop + 'px';
-                        cropOverlay.style.width = newWidth + 'px';
-                        cropOverlay.style.height = newHeight + 'px';
-                    }
-                }
-            });
-            
-            // マウスアップイベント
-            document.addEventListener('mouseup', function() {
-                isDragging = false;
-                isResizing = false;
-                resizeDirection = '';
-            });
-        }
-
-        /**
-         * 手動切り取りを実行
-         */
-        function executeCrop() {
-            const cropImage = document.getElementById('cropImage');
-            const cropOverlay = document.getElementById('cropOverlay');
-            
-            // 切り取り座標を計算
-            const imageRect = cropImage.getBoundingClientRect();
-            const overlayRect = cropOverlay.getBoundingClientRect();
-            
-            const scaleX = originalImage.width / imageRect.width;
-            const scaleY = originalImage.height / imageRect.height;
-            
-            cropData = {
-                x: parseInt(cropOverlay.style.left) * scaleX,
-                y: parseInt(cropOverlay.style.top) * scaleY,
-                width: cropOverlay.offsetWidth * scaleX,
-                height: cropOverlay.offsetHeight * scaleY
-            };
-            
-            // 手動切り取り完了後の処理
-            finalizeCrop();
-        }
-        /**
-         * 画像を処理（クロップ・リサイズ・形式変換）
-         * @param {File} file - 画像ファイル
-         * @param {Object} params - 処理パラメータ
-         * @param {boolean} ignoreSizeCheck - サイズチェックを無視するかどうか
-         */
-        function processImage(file, params, ignoreSizeCheck = false) {
-            return new Promise((resolve, reject) => {
-                const img = new Image();
-                img.onload = function() {
-                    originalImage = img;
-                    
-                    // 比率チェック
-                    if (!ignoreSizeCheck && !checkImageRatio(img, params)) {
-                        // サイズエラーを表示
-                        showSizeError(img);
-                        reject(new Error('SIZE_MISMATCH'));
-                        return;
-                    }
-                    
-                    const canvas = document.createElement('canvas');
-                    const ctx = canvas.getContext('2d');
-
-                    // 比率計算
-                    const [ratioW, ratioH] = params.ratio.split(':').map(Number);
-                    const targetRatio = params.orient === 'portrait' ? ratioH / ratioW : ratioW / ratioH;
-
-                    let { width, height } = img;
-                    let sx = 0, sy = 0, sw = width, sh = height;
-                    
-                    // 手動切り取りデータがある場合はそれを使用
-                    if (cropData) {
-                        sx = cropData.x;
-                        sy = cropData.y;
-                        sw = cropData.width;
-                        sh = cropData.height;
-                    } else {
-                        // 自動切り取り
-                        const currentRatio = width / height;
-                        
-                        if (currentRatio > targetRatio) {
-                            // 幅が余る場合
-                            sw = height * targetRatio;
-                            sx = (width - sw) / 2;
-                        } else if (currentRatio < targetRatio) {
-                            // 高さが余る場合
-                            sh = width / targetRatio;
-                            sy = (height - sh) / 2;
-                        }
-                    }
-
-                    // 出力サイズ計算
-                    let outputW = Math.min(params.maxW, sw);
-                    let outputH = Math.min(params.maxH, sh);
-                    
-                    // 比率を保持してリサイズ
-                    if (outputW / outputH > targetRatio) {
-                        outputW = outputH * targetRatio;
-                    } else {
-                        outputH = outputW / targetRatio;
-                    }
-
-                    canvas.width = Math.round(outputW);
-                    canvas.height = Math.round(outputH);
-
-                    // 描画
-                    ctx.drawImage(img, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
-
-                    processedCanvas = canvas;
-                    resolve(canvas);
-                };
-                img.onerror = reject;
-                img.src = URL.createObjectURL(file);
-            });
-        }
-
-        /**
-         * サイズエラーを表示
-         * @param {HTMLImageElement} img - 画像要素
-         */
-        function showSizeError(img) {
-            const errorAlert = document.getElementById('sizeErrorAlert');
-            const previewImage = document.getElementById('previewImage');
-            
-            // プレビュー画像を表示
-            previewImage.src = img.src;
-            previewImage.style.border = '3px solid #ffc107';
-            
-            // エラーアラートを表示
-            errorAlert.classList.remove('d-none');
-            
-            document.getElementById('previewArea').classList.remove('d-none');
-            document.getElementById('uploadArea').classList.add('d-none');
-        }
-
-        /**
-         * 切り取り完了後の処理
-         */
-        async function finalizeCrop() {
-            const cropArea = document.getElementById('cropArea');
-            const errorAlert = document.getElementById('sizeErrorAlert');
-            
-            // エリアを非表示
-            cropArea.classList.add('d-none');
-            errorAlert.classList.add('d-none');
-            
-            try {
-                // 処理を実行
-                const canvas = await processImage(currentFile, params, true);
-                const blob = await adjustFileSize(canvas, params.format, params.maxSize);
-                
-                // プレビュー更新
-                const previewImage = document.getElementById('previewImage');
-                previewImage.src = URL.createObjectURL(blob);
-                previewImage.style.border = 'none';
-                
-                updateInfoPanel(currentFile, blob, params);
-                setupDownloadButton(blob);
-                
-                showToast('切り取りが完了しました！');
-                
-            } catch (error) {
-                showToast('切り取り処理に失敗しました', 'danger');
-                console.error(error);
-            }
-        }
-
-        /**
-         * ダウンロードボタンを設定
-         * @param {Blob} blob - 処理済み画像のBlob
-         */
-        function setupDownloadButton(blob) {
-            const downloadBtn = document.getElementById('downloadBtn');
-            downloadBtn.onclick = () => {
-                const link = document.createElement('a');
-                link.download = `converted_${currentFile.name.split('.')[0]}.${params.format}`;
-                link.href = URL.createObjectURL(blob);
-                link.click();
-            };
-        }
-
-        /**
-         * ファイルサイズを調整
-         * @param {HTMLCanvasElement} canvas - キャンバス要素
-         * @param {string} format - 出力形式
-         * @param {number} maxSizeKB - 最大ファイルサイズ（KB）
-         */
-        function adjustFileSize(canvas, format, maxSizeKB) {
-            return new Promise((resolve) => {
-                const mimeType = format === 'png' ? 'image/png' : 'image/jpeg';
-                let quality = 0.9;
-                
-                function tryCompress() {
-                    canvas.toBlob((blob) => {
-                        const sizeKB = blob.size / 1024;
-                        
-                        if (sizeKB <= maxSizeKB || quality <= 0.1) {
-                            resolve(blob);
-                        } else {
-                            quality -= 0.1;
-                            tryCompress();
-                        }
-                    }, mimeType, format === 'jpeg' ? quality : undefined);
-                }
-                
-                tryCompress();
-            });
-        }
-
-        /**
-         * 情報パネルを更新
-         * @param {File} originalFile - 元ファイル
-         * @param {Blob} processedBlob - 処理後ファイル
-         * @param {Object} params - 処理パラメータ
-         */
-        function updateInfoPanel(originalFile, processedBlob, params) {
-            const panel = document.getElementById('infoPanel');
-            const originalSizeKB = Math.round(originalFile.size / 1024);
-            const processedSizeKB = Math.round(processedBlob.size / 1024);
-            const compressionRatio = Math.round((1 - processedBlob.size / originalFile.size) * 100);
-            
-            panel.innerHTML = `
-                <strong>処理結果:</strong><br>
-                元ファイル: ${originalSizeKB}KB → 変換後: ${processedSizeKB}KB (-${compressionRatio}%)<br>
-                比率: ${params.ratio} (${params.orient})<br>
-                形式: ${params.format.toUpperCase()}<br>
-                サイズ上限: ${params.maxW}×${params.maxH}px, ${params.maxSize}KB
-            `;
-        }
-
-        /**
-         * トースト通知を表示
-         * @param {string} message - 表示メッセージ
-         * @param {string} type - メッセージタイプ (success, danger)
-         */
-        function showToast(message, type = 'success') {
-            const toastEl = document.getElementById('toast');
-            const toastMessage = document.getElementById('toastMessage');
-            
-            toastMessage.textContent = message;
-            toastEl.className = `toast align-items-center text-bg-${type} border-0`;
-            
-            if (toastInstance) {
-                toastInstance.dispose();
-            }
-            toastInstance = new bootstrap.Toast(toastEl);
-            toastInstance.show();
-        }
-
-        // イベントリスナー設定
-        document.addEventListener('DOMContentLoaded', function() {
-            params = parseUrlParams();
-            displayConditionBanner(params);
-            
-            const shareUrl = document.getElementById('shareUrl');
-            shareUrl.value = generateShareLink();
-
-            const uploadArea = document.getElementById('uploadArea');
-            const fileInput = document.getElementById('fileInput');
-            const previewArea = document.getElementById('previewArea');
-            const previewImage = document.getElementById('previewImage');
-            const downloadBtn = document.getElementById('downloadBtn');
-            const resetBtn = document.getElementById('resetBtn');
-            const copyBtn = document.getElementById('copyBtn');
-
-            // サイズエラー関連のボタン
-            const autoCropBtn = document.getElementById('autoCropBtn');
-            const manualCropBtn = document.getElementById('manualCropBtn');
-            const ignoreSizeBtn = document.getElementById('ignoreSizeBtn');
-            const executeCropBtn = document.getElementById('executeCropBtn');
-            const cancelCropBtn = document.getElementById('cancelCropBtn');
-
-            // ファイル選択
-            uploadArea.addEventListener('click', () => fileInput.click());
-            
-            // ドラッグ&ドロップ
-            uploadArea.addEventListener('dragover', (e) => {
-                e.preventDefault();
-                uploadArea.classList.add('dragover');
-            });
-            
-            uploadArea.addEventListener('dragleave', () => {
-                uploadArea.classList.remove('dragover');
-            });
-            
-            uploadArea.addEventListener('drop', (e) => {
-                e.preventDefault();
-                uploadArea.classList.remove('dragover');
-                const files = e.dataTransfer.files;
-                if (files.length > 0) {
-                    handleFileSelect(files[0]);
-                }
-            });
-
-            fileInput.addEventListener('change', (e) => {
-                if (e.target.files.length > 0) {
-                    handleFileSelect(e.target.files[0]);
-                }
-            });
-
-            /**
-             * ファイル選択時の処理
-             * @param {File} file - 選択されたファイル
-             */
-            async function handleFileSelect(file) {
-                if (!file.type.startsWith('image/')) {
-                    showToast('画像ファイルを選択してください', 'danger');
-                    return;
-                }
-
-                currentFile = file;
-                cropData = null; // 切り取りデータをリセット
-                
-                try {
-                    const canvas = await processImage(file, params);
-                    const blob = await adjustFileSize(canvas, params.format, params.maxSize);
-                    
-                    // プレビュー表示
-                    const previewImage = document.getElementById('previewImage');
-                    previewImage.src = URL.createObjectURL(blob);
-                    previewImage.style.border = 'none';
-                    
-                    document.getElementById('previewArea').classList.remove('d-none');
-                    document.getElementById('uploadArea').classList.add('d-none');
-                    
-                    updateInfoPanel(file, blob, params);
-                    setupDownloadButton(blob);
-                    
-                } catch (error) {
-                    if (error.message === 'SIZE_MISMATCH') {
-                        // サイズミスマッチの場合は既にshowSizeError()で処理済み
-                        return;
-                    }
-                    showToast('画像の処理に失敗しました', 'danger');
-                    console.error(error);
-                }
-            }
-
-            // サイズエラー時のボタンイベント
-            autoCropBtn.addEventListener('click', async () => {
-                try {
-                    // 自動切り取りで再処理
-                    const canvas = await processImage(currentFile, params, true);
-                    const blob = await adjustFileSize(canvas, params.format, params.maxSize);
-                    
-                    const previewImage = document.getElementById('previewImage');
-                    previewImage.src = URL.createObjectURL(blob);
-                    previewImage.style.border = 'none';
-                    
-                    // エラーアラートを非表示
-                    document.getElementById('sizeErrorAlert').classList.add('d-none');
-                    
-                    updateInfoPanel(currentFile, blob, params);
-                    setupDownloadButton(blob);
-                    showToast('自動切り取りが完了しました！');
-                    
-                } catch (error) {
-                    showToast('自動切り取りに失敗しました', 'danger');
-                }
-            });
-
-            manualCropBtn.addEventListener('click', () => {
-                // 手動切り取りモードを表示
-                initManualCrop(originalImage);
-                document.getElementById('cropArea').classList.remove('d-none');
-            });
-
-            ignoreSizeBtn.addEventListener('click', async () => {
-                try {
-                    // サイズチェックを無視して処理
-                    const canvas = await processImage(currentFile, params, true);
-                    const blob = await adjustFileSize(canvas, params.format, params.maxSize);
-                    
-                    const previewImage = document.getElementById('previewImage');
-                    previewImage.src = URL.createObjectURL(blob);
-                    previewImage.style.border = 'none';
-                    
-                    document.getElementById('sizeErrorAlert').classList.add('d-none');
-                    
-                    updateInfoPanel(currentFile, blob, params);
-                    setupDownloadButton(blob);
-                    showToast('処理が完了しました');
-                    
-                } catch (error) {
-                    showToast('処理に失敗しました', 'danger');
-                }
-            });
-
-            executeCropBtn.addEventListener('click', executeCrop);
-
-            cancelCropBtn.addEventListener('click', () => {
-                document.getElementById('cropArea').classList.add('d-none');
-                cropData = null;
-            });
-            // リセットボタン
-            resetBtn.addEventListener('click', () => {
-                document.getElementById('previewArea').classList.add('d-none');
-                document.getElementById('uploadArea').classList.remove('d-none');
-                document.getElementById('sizeErrorAlert').classList.add('d-none');
-                document.getElementById('cropArea').classList.add('d-none');
-                currentFile = null;
-                processedCanvas = null;
-                originalImage = null;
-                cropData = null;
-                fileInput.value = '';
-            });
-
-            // コピーボタン
-            copyBtn.addEventListener('click', async () => {
-                try {
-                    await navigator.clipboard.writeText(shareUrl.value);
-                    showToast('リンクをコピーしました');
-                } catch (error) {
-                    showToast('コピーに失敗しました', 'danger');
-                }
-            });
-        });
-    </script>
+    <script src="main.js"></script>
 </body>
 </html>
